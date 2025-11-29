@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="eng">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE-edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Welcome to my Portfolio</title>
+        <link rel="stylesheet" href="style.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+
+    </head>
+    <body>
+        <div id="header">
+            <div class="container">
+                <nav>
+                    <img src="images/logo.png" class="logo">
+                    <ul id="sidemenu">
+                        <li><a href="#header">Home</a></li>
+                        <li><a href="#about">About</a></li>
+                        <li><a href="#project">Project</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                        <i class="fa-solid fa-xmark" onclick="closemenu()"></i>
+                    </ul>
+                    <i class="fa-solid fa-bars"onclick="openmenu()"></i>
+                </nav>
+                <div class="header-text">
+                    <p>IoT & Information Engineer</p>
+                    <h1>Hello , <span>Rapeepat Nitakorn</span> <br>From KMITL</h1>
+                </div>
+            </div>
+
+        </div>
+        <!------------------อะเบ้าท์ มี------------------->
+        <div id="about">
+            <div class="container">
+                <div class="row">
+                    <div class="about-col-1">
+                    <img src="images/portrait.jpg">
+                    </div>
+                    <div class="about-col-2">
+                    <h1 class="sub-title">About Me</h1>
+                    <p>ผมคือคนที่ชอบสร้างสรรค์ไอเดียใหม่ ๆ และถ่ายทอดออกมาเป็นชื้นงานในรูปแอพพลิเคชั่น <br> และเว็ปไซต์
+                        เชี่ยวชาญในภาษา <span>HTML</span> <span>CSS</span> <span>JAVASCRIPT</span> และใส่ใจในรายละเอียดของงาน
+                        <br>เป้าหมายของผมคือสร้างผลงานที่ใช้ได้จริง มีประโยชน์ และยั่งยืน เพื่อพัฒนาตัวเองอย่างต่อเนื่องในเส้นทางสายนี้</p>
+                        <div class="tab-titles">
+                            <p class="tab-links active-link" onclick="opentab('skills')">Skills</p>
+                            <p class="tab-links" onclick="opentab('education')">Education</p>
+                            <p class="tab-links" onclick="opentab('experience')">Experience</p>
+                        </div>
+                        <div class="tab-contents active-tab" id="skills">
+                            <ul>
+                                <li><span>UI/UX</span><br> Designing App/Web interfaces</li>
+                                <li><span>App Development</span><br> Building IOS/Android applications</li>
+                            </ul>
+                        </div>
+                        <div class="tab-contents" id="education">
+                            <ul>
+                                <li><span>2024 - Current</span><br> Studying at King Mongkut's Institute of Technology Ladkrabang</li>
+                        </div>
+                        <div class="tab-contents" id="experience">
+                            <ul>
+                                
+                            </ul>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+        <!------Portfolio------>
+        <div id="project">
+            <div class="container">
+                <h1 class="sub-title">My Project</h1>
+                <div class="work-list">
+
+                    <div class="work">
+                        <video width="640" autoplay muted loop>
+                            <source src="videos/smartlocker.mp4" type="video/mp4"></video>
+                    </div>
+                    <div class="work">
+                        <video width="640" autoplay muted loop>
+                            <source src="videos/sunflower.mp4" type="video/mp4"></video>
+                    </div>
+                    <div class="work">
+                        <video width="640" autoplay muted loop>
+                            <source src="videos/phrase.mp4" type="video/mp4"></video>
+                    </div>
+
+                    <div class="layer">
+                        <ul>
+                            <li><h3><span>Smart Locker System</span></h3><br>ตู้นิรภัยอัจฉริยะ แจ้งเตือนทุกครั้ง<br> พร้อมรวบรวมรายชื่อ สถิติการใช้งาน</li><br>
+                            <li><h3><span>Solar Tracking System</span></h3><br>โซล่าเซลล์ติดตามแสงอัจฉริยะ <br> พร้อมระบบรวบรวมข้อมูล self-care</li><br>
+                            <li><h3><span>Gamemaker Challenge</span></h3><br>เกมประเภท Side scrolling<br> พร้อมระบบทำคะแนนสูงสุด และเพิ่มความยากอัตโนมัติ</li>
+                        </ul>
+                    </div>
+                    
+                    
+                </div>
+            </div>
+        </div>
+        <!------Contact------>
+        <div id="contact">
+            <div class="container">
+                <div class="row">
+                    <div class="contact-left">
+                        <h1 class="sub-title">Contact Me</h1>
+                        <p><i class="fa-solid fa-envelope"></i>nitakornr@gmail.com</p>
+                        <p><i class="fa-solid fa-phone"></i>(+66) 822372512</p>
+                        <div class="social-icons">
+                            <a href="https://www.facebook.com/rapeepat.nitakorn"><i class="fa-brands fa-facebook"></i></a>
+                            <a href="https://www.instagram.com/faroverfi/"><i class="fa-brands fa-instagram"></i></a>
+                            <a href="https://www.tiktok.com/@fifahaka"><i class="fa-brands fa-tiktok"></i></a>
+                        </div>
+                    </div>
+                    <div class="contact-right">
+                        <form name="submit-to-google-sheet">
+                            <input type="text" name="Name" placeholder="Your Name" required>
+                            <input type="email" name="Email" placeholder="Your Email" required>
+                            <textarea name="Message" rows="6" placeholder="Your Message" ></textarea>
+                            <button type="submit" class="btn">Submit</button>
+                        </form>
+                        <span id="msg"></span>
+                    </div>
+                </div>
+            </div>
+        </div>  
+        <!------service------>
+
+        <script>
+
+            var tablinks = document.getElementsByClassName("tab-links");
+            var tabcontents = document.getElementsByClassName("tab-contents");
+
+            function opentab(tabname){
+                for(tablink of tablinks){
+                    tablink.classList.remove("active-link");
+                }
+                for(tabcontent of tabcontents){
+                    tabcontent.classList.remove("active-tab");
+                }
+                event.currentTarget.classList.add("active-link");
+                document.getElementById(tabname).classList.add("active-tab");
+            }
+            
+
+        </script>
+        <script>
+
+            var sidemenu = document.getElementById("sidemenu");
+            function openmenu(){
+                sidemenu.style.right = "0";
+
+            }
+            function closemenu(){
+                sidemenu.style.right = "-200px";
+                
+            }
+
+        </script>
+        <script>
+            const scriptURL = 'https://script.google.com/macros/s/AKfycbxF-G5xxYav-BECV897Q3qAEpG7oPI8qrEgxj7719G20Vy-o0wCOkfx2m30hlD32hlgCg/exec'
+            const form = document.forms['submit-to-google-sheet']
+            const msg = document.getElementById("msg")
+
+
+            form.addEventListener('submit', e => {
+                e.preventDefault()
+                fetch(scriptURL, { method: 'POST', body: new FormData(form)})
+                    .then(response => {
+                        msg.innerHTML = " Message sent! "
+                        setTimeout(function(){
+                            msg.innerHTML =""
+                        },5000)
+                        form.reset()
+                    })
+                    .catch(error => console.error('Error!', error.message))
+                })
+        </script>
+    </body>
+</html>
