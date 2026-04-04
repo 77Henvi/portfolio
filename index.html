@@ -1,147 +1,266 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Welcome to my Portfolio</title>
-        <link rel="stylesheet" href="style.css">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
-    </head>
-    <body>
-        <div id="header">
-            <div class="container">
-                <nav>
-                    <img src="images/logo.png" class="logo" alt="Logo">
-                    <ul id="sidemenu">
-                        <li><a href="#header">Home</a></li>
-                        <li><a href="#about">About</a></li>
-                        <li><a href="#project">Project</a></li>
-                        <li><a href="#contact">Contact</a></li>
-                        <i class="fa-solid fa-xmark" onclick="closemenu()"></i>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rapeepat Nitakorn — Portfolio</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<!-- Custom cursor -->
+<div class="cursor-dot"></div>
+<div class="cursor-ring"></div>
+
+<!-- Loader -->
+<div id="loader">
+    <div class="loader-inner">
+        <span class="loader-name">RAPEEPAT</span>
+        <div class="loader-bar"><div class="loader-progress"></div></div>
+    </div>
+</div>
+
+<!-- NAV -->
+<nav id="navbar">
+    <a href="#header" class="nav-logo">
+        <img src="images/logo.png" alt="Logo">
+    </a>
+    <ul id="sidemenu">
+        <li><a href="#header">Home</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#project">Project</a></li>
+        <li><a href="#contact">Contact</a></li>
+        <i class="fa-solid fa-xmark" onclick="closemenu()"></i>
+    </ul>
+    <div class="nav-right">
+        <span class="nav-status"><span class="status-dot"></span>Available</span>
+        <i class="fa-solid fa-bars" onclick="openmenu()"></i>
+    </div>
+</nav>
+
+<!-- ====== HERO ====== -->
+<section id="header">
+    <div class="hero-bg">
+        <img src="images/background.jpg" alt="" class="hero-bg-img">
+        <div class="hero-overlay"></div>
+        <div class="grain-overlay"></div>
+    </div>
+
+    <div class="hero-content container">
+        <div class="hero-eyebrow">
+            <span class="eyebrow-line"></span>
+            <span>67010764 — KMITL</span>
+        </div>
+        <h1 class="hero-title">
+            <span class="title-line"><span class="reveal-word">Hello,</span></span>
+            <span class="title-line"><span class="reveal-word">I'm </span><span class="reveal-word accent-text" id="typing-target">Rapeepat</span></span>
+            <span class="title-line"><span class="reveal-word">Nitakorn</span></span>
+        </h1>
+        <div class="hero-sub">
+            <p>Web Developer &amp; IoT Engineer<br>from King Mongkut's Institute of Technology Ladkrabang</p>
+        </div>
+        <div class="hero-cta">
+            <a href="#project" class="btn-main magnetic"><span>View Work</span><i class="fa-solid fa-arrow-down-long"></i></a>
+            <a href="#contact" class="btn-ghost magnetic">Get in touch</a>
+        </div>
+    </div>
+
+    <div class="hero-ticker">
+        <div class="ticker-track">
+            <span>Web Development</span><span class="sep">✦</span>
+            <span>IoT Engineering</span><span class="sep">✦</span>
+            <span>UI / UX Design</span><span class="sep">✦</span>
+            <span>App Development</span><span class="sep">✦</span>
+            <span>Web Development</span><span class="sep">✦</span>
+            <span>IoT Engineering</span><span class="sep">✦</span>
+            <span>UI / UX Design</span><span class="sep">✦</span>
+            <span>App Development</span><span class="sep">✦</span>
+        </div>
+    </div>
+
+    <div class="scroll-indicator">
+        <div class="scroll-line"></div>
+        <span>Scroll</span>
+    </div>
+</section>
+
+<!-- ====== ABOUT ====== -->
+<section id="about">
+    <div class="container">
+        <div class="section-header">
+            <span class="section-number">01</span>
+            <span class="section-label">About Me</span>
+        </div>
+        <div class="about-grid">
+            <div class="about-img-wrap stagger-reveal">
+                <div class="about-img-frame">
+                    <img src="images/portrait.jpg" alt="Portrait">
+                    <div class="img-caption">
+                        <span>Rapeepat Nitakorn</span>
+                        <span>Bangkok, Thailand</span>
+                    </div>
+                </div>
+                <div class="about-img-deco"></div>
+            </div>
+            <div class="about-text stagger-reveal">
+                <h2 class="section-title">Building things<br><em>that matter.</em></h2>
+                <p class="about-body">
+                    ผมคือคนที่ชอบสร้างสรรค์ไอเดียใหม่ ๆ และถ่ายทอดออกมาเป็นชิ้นงานในรูปแอพพลิเคชั่น
+                    และเว็บไซต์ เชี่ยวชาญในภาษา <mark>HTML</mark> <mark>CSS</mark> <mark>JAVASCRIPT</mark> และใส่ใจในรายละเอียดของงาน
+                </p>
+                <div class="tab-titles">
+                    <p class="tab-links active-link" onclick="opentab('skills')">Skills</p>
+                    <p class="tab-links" onclick="opentab('education')">Education</p>
+                    <p class="tab-links" onclick="opentab('experience')">Experience</p>
+                </div>
+                <div class="tab-contents active-tab" id="skills">
+                    <ul>
+                        <li><span>UI/UX Design</span>Designing App &amp; Web interfaces</li>
+                        <li><span>App Development</span>Building iOS/Android applications</li>
+                        <li><span>Web Development</span>HTML · CSS · JavaScript</li>
                     </ul>
-                    <i class="fa-solid fa-bars" onclick="openmenu()"></i>
-                </nav>
-                <div class="header-text">
-                    <p>67010764</p>
-                    <h1>Hello,I'm <span>Rapeepat Nitakorn</span><br>From KMITL</h1>
+                </div>
+                <div class="tab-contents" id="education">
+                    <ul>
+                        <li><span>2024 – Present</span>King Mongkut's Institute of Technology Ladkrabang</li>
+                    </ul>
+                </div>
+                <div class="tab-contents" id="experience">
+                    <ul>
+                        <li><span>Web Development</span>Creating responsive and interactive websites</li>
+                        <li><span>IoT Projects</span>Building smart systems and automation</li>
+                    </ul>
                 </div>
             </div>
         </div>
+    </div>
+</section>
 
-        <!------------------About Me------------------->
-        <div id="about">
-            <div class="container">
-                <div class="row">
-                    <div class="about-col-1">
-                        <img src="images/portrait.jpg" alt="Portrait">
+<!-- ====== PROJECT ====== -->
+<section id="project">
+    <div class="container">
+        <div class="section-header">
+            <span class="section-number">02</span>
+            <span class="section-label">Selected Work</span>
+        </div>
+        <h2 class="section-title stagger-reveal">My Projects.</h2>
+        <div class="project-list">
+
+            <div class="project-item stagger-reveal">
+                <div class="project-video-wrap">
+                    <video autoplay muted loop playsinline>
+                        <source src="videos/smartlocker.mp4" type="video/mp4">
+                    </video>
+                    <div class="project-video-overlay"></div>
+                </div>
+                <div class="project-info">
+                    <div class="project-meta">
+                        <span class="project-index">01</span>
+                        <div class="project-tags"><span>IoT</span><span>Hardware</span><span>Security</span></div>
                     </div>
-                    <div class="about-col-2">
-                        <h1 class="sub-title">About Me</h1>
-                        <p>ผมคือคนที่ชอบสร้างสรรค์ไอเดียใหม่ ๆ และถ่ายทอดออกมาเป็นชิ้นงานในรูปแอพพลิเคชั่น<br>และเว็บไซต์
-                            เชี่ยวชาญในภาษา <span>HTML</span> <span>CSS</span> <span>JAVASCRIPT</span> และใส่ใจในรายละเอียดของงาน
-                            <br>เป้าหมายของผมคือสร้างผลงานที่ใช้ได้จริง มีประโยชน์ และยั่งยืน เพื่อพัฒนาตัวเองอย่างต่อเนื่องในเส้นทางสายนี้
-                        </p>
-                        <div class="tab-titles">
-                            <p class="tab-links active-link" onclick="opentab('skills')">Skills</p>
-                            <p class="tab-links" onclick="opentab('education')">Education</p>
-                            <p class="tab-links" onclick="opentab('experience')">Experience</p>
-                        </div>
-                        <div class="tab-contents active-tab" id="skills">
-                            <ul>
-                                <li><span>UI/UX</span><br>Designing App/Web interfaces</li>
-                                <li><span>App Development</span><br>Building iOS/Android applications</li>
-                            </ul>
-                        </div>
-                        <div class="tab-contents" id="education">
-                            <ul>
-                                <li><span>2024 - Current</span><br>Studying at King Mongkut's Institute of Technology Ladkrabang</li>
-                            </ul>
-                        </div>
-                        <div class="tab-contents" id="experience">
-                            <ul>
-                                <li><span>Web Development</span><br>Creating responsive and interactive websites</li>
-                                <li><span>IoT Projects</span><br>Building smart systems and automation</li>
-                            </ul>
-                        </div>
-                    </div>
+                    <h3 class="project-title">Smart Locker System</h3>
+                    <p class="project-desc">ตู้นิรภัยอัจฉริยะ แจ้งเตือนทุกครั้ง พร้อมรวบรวมรายชื่อ สถิติการใช้งาน</p>
+                    <a href="#" class="project-link magnetic"><span>View Project</span><i class="fa-solid fa-arrow-up-right"></i></a>
                 </div>
             </div>
-        </div>
 
-        <!------------------Portfolio------------------->
-        <div id="project">
-            <div class="container">
-                <h1 class="sub-title">My Project</h1>
-                <div class="work-list">
-                    <div class="work">
-                        <video width="640" autoplay muted loop>
-                            <source src="videos/smartlocker.mp4" type="video/mp4">
-                        </video>
-                        <div class="layer">
-                            <h3>Smart Locker System</h3>
-                            <p>ตู้นิรภัยอัจฉริยะ แจ้งเตือนทุกครั้ง<br>พร้อมรวบรวมรายชื่อ สถิติการใช้งาน</p>
-                            <a href="#"><i class="fa-solid fa-arrow-up-right-from-square"></i></a>
-                        </div>
+            <div class="project-item stagger-reveal">
+                <div class="project-video-wrap">
+                    <video autoplay muted loop playsinline>
+                        <source src="videos/sunflower.mp4" type="video/mp4">
+                    </video>
+                    <div class="project-video-overlay"></div>
+                </div>
+                <div class="project-info">
+                    <div class="project-meta">
+                        <span class="project-index">02</span>
+                        <div class="project-tags"><span>Solar</span><span>IoT</span><span>Data</span></div>
                     </div>
-                    
-                    <div class="work">
-                        <video width="640" autoplay muted loop>
-                            <source src="videos/sunflower.mp4" type="video/mp4">
-                        </video>
-                        <div class="layer">
-                            <h3>Solar Tracking System</h3>
-                            <p>โซล่าเซลล์ติดตามแสงอัจฉริยะ<br>พร้อมระบบรวบรวมข้อมูล self-care</p>
-                            <a href="#"><i class="fa-solid fa-arrow-up-right-from-square"></i></a>
-                        </div>
-                    </div>
-                    
-                    <div class="work">
-                        <video width="640" autoplay muted loop>
-                            <source src="videos/phrase.mp4" type="video/mp4">
-                        </video>
-                        <div class="layer">
-                            <h3>Gamemaker Challenge</h3>
-                            <p>เกมประเภท Side scrolling<br>พร้อมระบบทำคะแนนสูงสุด และเพิ่มความยากอัตโนมัติ</p>
-                            <a href="#"><i class="fa-solid fa-arrow-up-right-from-square"></i></a>
-                        </div>
-                    </div>
+                    <h3 class="project-title">Solar Tracking System</h3>
+                    <p class="project-desc">โซล่าเซลล์ติดตามแสงอัจฉริยะ พร้อมระบบรวบรวมข้อมูล self-care</p>
+                    <a href="#" class="project-link magnetic"><span>View Project</span><i class="fa-solid fa-arrow-up-right"></i></a>
                 </div>
             </div>
-        </div>
 
-        <!------------------Contact------------------->
-        <div id="contact">
-            <div class="container">
-                <div class="row">
-                    <div class="contact-left">
-                        <h1 class="sub-title">Contact Me</h1>
-                        <p><i class="fa-solid fa-envelope"></i> nitakornr@gmail.com</p>
-                        <p><i class="fa-solid fa-phone"></i> (+66) 822372512</p>
-                        <div class="social-icons">
-                            <a href="https://www.facebook.com/rapeepat.nitakorn" target="_blank"><i class="fa-brands fa-facebook"></i></a>
-                            <a href="https://www.instagram.com/faroverfi/" target="_blank"><i class="fa-brands fa-instagram"></i></a>
-                            <a href="https://www.tiktok.com/@fifahaka" target="_blank"><i class="fa-brands fa-tiktok"></i></a>
-                        </div>
-                        <a href="cv.pdf" download class="btn btn2">Download CV</a>
+            <div class="project-item stagger-reveal">
+                <div class="project-video-wrap">
+                    <video autoplay muted loop playsinline>
+                        <source src="videos/phrase.mp4" type="video/mp4">
+                    </video>
+                    <div class="project-video-overlay"></div>
+                </div>
+                <div class="project-info">
+                    <div class="project-meta">
+                        <span class="project-index">03</span>
+                        <div class="project-tags"><span>Game</span><span>JavaScript</span></div>
                     </div>
-                    <div class="contact-right">
-                        <form name="submit-to-google-sheet">
-                            <input type="text" name="Name" placeholder="Your Name" required>
-                            <input type="email" name="Email" placeholder="Your Email" required>
-                            <textarea name="Message" rows="6" placeholder="Your Message" required></textarea>
-                            <button type="submit" class="btn">Submit</button>
-                        </form>
-                        <span id="msg"></span>
-                    </div>
+                    <h3 class="project-title">Gamemaker Challenge</h3>
+                    <p class="project-desc">เกมประเภท Side scrolling พร้อมระบบทำคะแนนสูงสุด และเพิ่มความยากอัตโนมัติ</p>
+                    <a href="#" class="project-link magnetic"><span>View Project</span><i class="fa-solid fa-arrow-up-right"></i></a>
                 </div>
             </div>
-            <div class="copyright">
-                <p>Copyright © 2024 Rapeepat. Made with <i class="fa-solid fa-heart"></i> by Rapeepat Nitakorn</p>
+
+        </div>
+    </div>
+</section>
+
+<!-- ====== CONTACT ====== -->
+<section id="contact">
+    <div class="container">
+        <div class="section-header">
+            <span class="section-number">03</span>
+            <span class="section-label">Get In Touch</span>
+        </div>
+        <div class="contact-grid">
+            <div class="contact-left stagger-reveal">
+                <h2 class="section-title">Let's work<br><em>together.</em></h2>
+                <p class="contact-body">มีโปรเจกต์ในใจ? หรืออยากพูดคุยอะไรก็ได้ ติดต่อมาได้เลยครับ</p>
+                <div class="contact-links">
+                    <a href="mailto:nitakornr@gmail.com" class="contact-link-item">
+                        <i class="fa-solid fa-envelope"></i><span>nitakornr@gmail.com</span>
+                    </a>
+                    <a href="tel:+66822372512" class="contact-link-item">
+                        <i class="fa-solid fa-phone"></i><span>(+66) 822372512</span>
+                    </a>
+                </div>
+                <div class="social-icons">
+                    <a href="https://www.facebook.com/rapeepat.nitakorn" target="_blank" class="magnetic" title="Facebook"><i class="fa-brands fa-facebook"></i></a>
+                    <a href="https://www.instagram.com/faroverfi/" target="_blank" class="magnetic" title="Instagram"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="https://www.tiktok.com/@fifahaka" target="_blank" class="magnetic" title="TikTok"><i class="fa-brands fa-tiktok"></i></a>
+                </div>
+                <a href="cv.pdf" download class="btn-main magnetic" style="margin-top:32px;display:inline-flex;"><span>Download CV</span><i class="fa-solid fa-download"></i></a>
+            </div>
+            <div class="contact-right stagger-reveal">
+                <form name="submit-to-google-sheet" class="contact-form">
+                    <div class="form-group">
+                        <label>Your Name</label>
+                        <input type="text" name="Name" placeholder="Rapeepat Nitakorn" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Email Address</label>
+                        <input type="email" name="Email" placeholder="hello@example.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Message</label>
+                        <textarea name="Message" rows="5" placeholder="Tell me about your project..." required></textarea>
+                    </div>
+                    <button type="submit" class="btn-main magnetic" style="width:100%;justify-content:center;"><span>Send Message</span><i class="fa-solid fa-paper-plane"></i></button>
+                    <span id="msg"></span>
+                </form>
             </div>
         </div>
+    </div>
+    <footer class="footer">
+        <div class="container footer-inner">
+            <p>© 2024 Rapeepat Nitakorn. Made with <i class="fa-solid fa-heart"></i></p>
+            <a href="#header" class="back-top magnetic">Back to top <i class="fa-solid fa-arrow-up"></i></a>
+        </div>
+    </footer>
+</section>
 
-        <!-- JavaScript File -->
-        <script src="script.js"></script>
-    </body>
+<script src="script.js"></script>
+</body>
 </html>
