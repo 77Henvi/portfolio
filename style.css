@@ -908,6 +908,7 @@ nav .fa-bars { display: none; font-size: 22px; cursor: pointer; color: var(--clr
     gap: 24px;
 }
 .modal-info {}
+
 .modal-index {
     font-family: var(--font-display);
     font-size: 13px;
