@@ -140,9 +140,23 @@ if (form) {
     const emailInput = form.elements['Email'];
     const nameInput  = form.elements['Name'];
 
-    emailInput?.addEventListener('blur', () => {
-        const ok = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailInput.value);
-        emailInput.style.borderColor = ok ? 'rgba(74,222,128,0.5)' : 'rgba(239,68,68,0.5)';
+    emailInput?.addEventListener('input', () => {
+    const val = emailInput.value;
+    const hints = document.querySelectorAll('.email-hint');
+    const checks = [
+        { el: hints[0], ok: val.includes('@') },
+        { el: hints[1], ok: /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val) },
+    ];
+    checks.forEach(({ el, ok }) => {
+        if (!el) return;
+        el.style.color = ok ? 'rgba(74,222,128,0.85)' : 'var(--clr-muted)';
+        el.querySelector('i').className = ok
+            ? 'fa-solid fa-circle-check'
+            : 'fa-regular fa-circle';
+    });
+    emailInput.style.borderColor = checks[1].ok
+        ? 'rgba(74,222,128,0.5)'
+        : val.length > 0 ? 'rgba(239,68,68,0.4)' : '';
     });
     nameInput?.addEventListener('blur', () => {
         nameInput.style.borderColor = nameInput.value.length >= 2 ? 'rgba(74,222,128,0.5)' : 'rgba(239,68,68,0.5)';

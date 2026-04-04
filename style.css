@@ -983,3 +983,19 @@ nav .fa-bars { display: none; font-size: 22px; cursor: pointer; color: var(--clr
     .modal-meta { flex-direction: column; gap: 16px; }
     .modal-close { align-self: flex-end; }
 }
+
+.email-hints {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-top: 10px;
+}
+.email-hint {
+    font-size: 12px;
+    color: var(--clr-muted);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: color 0.3s;
+}
+.email-hint i { font-size: 13px; }
