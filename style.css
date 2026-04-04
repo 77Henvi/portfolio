@@ -206,7 +206,7 @@ nav .fa-bars { display: none; font-size: 22px; cursor: pointer; color: var(--clr
     position: relative;
     z-index: 3;
     padding-top: calc(var(--nav-h) + 40px);
-    padding-bottom: 80px;
+    padding-bottom: 160px;
 }
 .hero-eyebrow {
     display: flex;
@@ -315,7 +315,7 @@ nav .fa-bars { display: none; font-size: 22px; cursor: pointer; color: var(--clr
 /* Ticker */
 .hero-ticker {
     position: absolute;
-    bottom: 80px;
+    bottom: 0px;
     left: 0; right: 0;
     overflow: hidden;
     z-index: 3;
@@ -342,7 +342,7 @@ nav .fa-bars { display: none; font-size: 22px; cursor: pointer; color: var(--clr
 /* Scroll indicator */
 .scroll-indicator {
     position: absolute;
-    bottom: 16px;
+    bottom: 56px;
     right: 6%;
     z-index: 3;
     display: flex;
