@@ -162,4 +162,71 @@ if (form) {
     });
 }
 
+/* ===================== VIDEO MODAL ===================== */
+const modal       = document.getElementById('video-modal');
+const modalVideo  = document.getElementById('modal-video');
+const modalSrc    = document.getElementById('modal-video-src');
+const modalIndex  = document.getElementById('modal-index');
+const modalTitle  = document.getElementById('modal-title');
+const modalDesc   = document.getElementById('modal-desc');
+const modalTags   = document.getElementById('modal-tags');
+const modalProg   = document.getElementById('modal-progress');
+const modalClose  = document.getElementById('modal-close');
+const modalBack   = document.getElementById('modal-backdrop');
+
+function openModal(data) {
+    // inject content
+    modalSrc.src      = data.src;
+    modalIndex.textContent = data.index;
+    modalTitle.textContent = data.title;
+    modalDesc.textContent  = data.desc;
+    modalTags.innerHTML = data.tags.map(t => `<span>${t}</span>`).join('');
+
+    // load & play
+    modalVideo.load();
+    modalVideo.play();
+
+    modal.classList.add('open');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeModal() {
+    modal.classList.remove('open');
+    modalVideo.pause();
+    modalVideo.currentTime = 0;
+    modalProg.style.width = '0%';
+    document.body.style.overflow = '';
+}
+
+// Progress bar sync
+modalVideo.addEventListener('timeupdate', () => {
+    if (!modalVideo.duration) return;
+    modalProg.style.width = (modalVideo.currentTime / modalVideo.duration * 100) + '%';
+});
+
+// Close triggers
+modalClose.addEventListener('click', closeModal);
+modalBack.addEventListener('click', closeModal);
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+// Hook every project-link to open modal
+document.querySelectorAll('.project-item').forEach(item => {
+    const link = item.querySelector('.project-link');
+    if (!link) return;
+
+    link.addEventListener('click', e => {
+        e.preventDefault();
+        const videoEl  = item.querySelector('video source');
+        const tags     = [...item.querySelectorAll('.project-tags span')].map(s => s.textContent);
+
+        openModal({
+            src:   videoEl?.src || '',
+            index: item.querySelector('.project-index')?.textContent || '',
+            title: item.querySelector('.project-title')?.textContent || '',
+            desc:  item.querySelector('.project-desc')?.textContent  || '',
+            tags,
+        });
+    });
+});
+
 console.log('🔥 Portfolio ready.');
