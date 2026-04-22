@@ -218,16 +218,19 @@ menuBackdrop.className = 'menu-backdrop';
 document.body.appendChild(menuBackdrop);
 menuBackdrop.addEventListener('click', closemenu);
 
+// Prevent background scroll on iOS without moving the page
+function preventScroll(e) { e.preventDefault(); }
+
 function openmenu() {
     sidemenu.style.right = '0';
     menuBackdrop.classList.add('visible');
-    document.documentElement.style.overflow = 'hidden'; // lock html — works on iOS
+    document.body.addEventListener('touchmove', preventScroll, { passive: false });
 }
 
 function closemenu() {
     sidemenu.style.right = '-280px';
     menuBackdrop.classList.remove('visible');
-    document.documentElement.style.overflow = '';
+    document.body.removeEventListener('touchmove', preventScroll);
 }
 
 /* ===================== TYPING EFFECT ===================== */

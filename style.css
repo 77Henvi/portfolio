@@ -783,8 +783,8 @@ nav .fa-bars { display: none; font-size: 22px; cursor: pointer; color: var(--clr
         top: 0; right: -280px; bottom: 0;
         width: 280px;
         flex-direction: column;
-        justify-content: center;
-        padding: 40px 32px;
+        justify-content: flex-start;
+        padding: 80px 32px 40px;
         gap: 4px;
         z-index: 600;
         transition: right 0.45s var(--ease-out);
