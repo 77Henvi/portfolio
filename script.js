@@ -2,20 +2,55 @@
 const dot  = document.querySelector('.cursor-dot');
 const ring = document.querySelector('.cursor-ring');
 let mx = 0, my = 0, rx = 0, ry = 0;
+let cursorLabel = null;
 
 document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
 
+// animateCursor is defined after initCursorLabel below
+
+/* Cursor label on project hover */
+function initCursorLabel() {
+    cursorLabel = document.createElement('div');
+    cursorLabel.className = 'cursor-label';
+    cursorLabel.textContent = 'VIEW';
+    document.body.appendChild(cursorLabel);
+
+    document.querySelectorAll('.project-item').forEach(item => {
+        item.addEventListener('mouseenter', () => {
+            ring?.classList.add('cursor-expand');
+            cursorLabel?.classList.add('visible');
+        });
+        item.addEventListener('mouseleave', () => {
+            ring?.classList.remove('cursor-expand');
+            cursorLabel?.classList.remove('visible');
+        });
+    });
+    // Position synced via mx/my in animateCursor rAF — no extra listener needed
+}
+// animateCursor — moves cursor dot, ring, and label in one rAF loop
 function animateCursor() {
     rx += (mx - rx) * 0.12;
     ry += (my - ry) * 0.12;
-    if (dot)  dot.style.cssText  += `left:${mx}px;top:${my}px;`;
-    if (ring) ring.style.cssText += `left:${rx}px;top:${ry}px;`;
+    if (dot)  { dot.style.left  = mx + 'px'; dot.style.top  = my + 'px'; }
+    if (ring) { ring.style.left = rx + 'px'; ring.style.top = ry + 'px'; }
+    if (cursorLabel) { cursorLabel.style.left = mx + 'px'; cursorLabel.style.top = my + 'px'; }
     requestAnimationFrame(animateCursor);
 }
-animateCursor();
+initCursorLabel();
+animateCursor(); // start rAF loop after label is created
 
-/* ===================== LOADER ===================== */
+/* ===================== LOADER — glitch flash ===================== */
 window.addEventListener('load', () => {
+    const loaderName = document.querySelector('.loader-name');
+    let glitchCount = 0;
+    const glitchInterval = setInterval(() => {
+        if (!loaderName) { clearInterval(glitchInterval); return; }
+        loaderName.classList.add('glitch');
+        setTimeout(() => loaderName?.classList.remove('glitch'), 80);
+        glitchCount++;
+        if (glitchCount >= 3) clearInterval(glitchInterval);
+    }, 300);
+
     setTimeout(() => {
         document.getElementById('loader')?.classList.add('done');
     }, 1600);
@@ -42,7 +77,71 @@ document.querySelectorAll('.magnetic').forEach(el => {
     });
 });
 
-/* ===================== STAGGER REVEAL (IntersectionObserver) ===================== */
+/* ===================== PARALLAX ===================== */
+let targetScrollY = 0, tScrollY = 0;
+function lerp(a, b, t) { return a + (b - a) * t; }
+window.addEventListener('scroll', () => { targetScrollY = window.scrollY; }, { passive: true });
+
+const heroBgImg   = document.querySelector('.hero-bg-img');
+const heroContent = document.querySelector('.hero-content');
+const heroTicker  = document.querySelector('.hero-ticker');
+const scrollInd   = document.querySelector('.scroll-indicator');
+
+const isMobile = () => window.innerWidth <= 700;
+
+function parallaxLoop() {
+    tScrollY = lerp(tScrollY, targetScrollY, 0.08);
+    const s = tScrollY;
+    if (!isMobile()) {
+        if (heroBgImg)   heroBgImg.style.transform   = `scale(1.12) translateY(${s * 0.25}px)`;
+        if (heroContent) heroContent.style.transform  = `translateY(${s * 0.18}px)`;
+        if (heroTicker)  heroTicker.style.transform   = `translateY(${s * -0.06}px)`;
+        if (scrollInd)   scrollInd.style.opacity      = Math.max(0, 1 - s / 300);
+    }
+    requestAnimationFrame(parallaxLoop);
+}
+parallaxLoop();
+
+/* ===================== CHAR SPLIT REVEAL ===================== */
+function splitChars(el) {
+    if (!el || el.dataset.split) return;
+    el.dataset.split = 'true';
+    const tempDiv = document.createElement('div');
+    tempDiv.innerHTML = el.innerHTML;
+    const counter = { i: 0 };
+
+    function wrapTextNodes(node) {
+        if (node.nodeType === Node.TEXT_NODE) {
+            const chars = node.textContent.split('');
+            const frag = document.createDocumentFragment();
+            chars.forEach(ch => {
+                const span = document.createElement('span');
+                span.className = 'char';
+                span.style.setProperty('--ci', counter.i++);
+                span.textContent = ch === ' ' ? '\u00A0' : ch;
+                frag.appendChild(span);
+            });
+            node.parentNode.replaceChild(frag, node);
+        } else if (node.nodeType === Node.ELEMENT_NODE) {
+            if (node.tagName === 'EM' || node.tagName === 'MARK' || node.tagName === 'STRONG') {
+                // Wrap the whole inline element as one char unit to preserve styling
+                node.style.setProperty('--ci', counter.i++);
+                node.classList.add('char');
+            } else {
+                [...node.childNodes].forEach(child => wrapTextNodes(child));
+            }
+        }
+    }
+
+    [...tempDiv.childNodes].forEach(child => wrapTextNodes(child));
+    el.innerHTML = '';
+    el.appendChild(tempDiv);
+}
+
+const splitTitles = document.querySelectorAll('.section-title');
+splitTitles.forEach(el => splitChars(el));
+
+/* ===================== STAGGER REVEAL ===================== */
 const reveals = document.querySelectorAll('.stagger-reveal');
 const revealObs = new IntersectionObserver((entries) => {
     entries.forEach((entry, i) => {
@@ -54,6 +153,37 @@ const revealObs = new IntersectionObserver((entries) => {
     });
 }, { threshold: 0.12 });
 reveals.forEach(el => revealObs.observe(el));
+
+/* ===================== CHAR REVEAL ===================== */
+const titleObs = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.classList.add('chars-visible');
+            titleObs.unobserve(entry.target);
+        }
+    });
+}, { threshold: 0.2 });
+splitTitles.forEach(el => titleObs.observe(el));
+
+/* Project items already use .stagger-reveal — no extra delay override needed */
+
+/* ===================== SECTION NUMBER COUNT-UP ===================== */
+document.querySelectorAll('.section-number').forEach(el => {
+    const target = parseInt(el.textContent, 10);
+    el.textContent = '00';
+    const numObs = new IntersectionObserver(entries => {
+        if (!entries[0].isIntersecting) return;
+        numObs.disconnect();
+        let current = 0;
+        const step = () => {
+            current++;
+            el.textContent = String(current).padStart(2, '0');
+            if (current < target) setTimeout(step, 120);
+        };
+        step();
+    }, { threshold: 0.5 });
+    numObs.observe(el);
+});
 
 /* ===================== ACTIVE NAV ===================== */
 const sections  = document.querySelectorAll('#header, #about, #project, #contact');
@@ -73,17 +203,41 @@ sections.forEach(s => navObs.observe(s));
 /* ===================== TABS ===================== */
 var tablinks    = document.getElementsByClassName('tab-links');
 var tabcontents = document.getElementsByClassName('tab-contents');
-function opentab(tabname) {
+function opentab(tabname, e) {
     for (let t of tablinks)    t.classList.remove('active-link');
     for (let t of tabcontents) t.classList.remove('active-tab');
-    event.currentTarget.classList.add('active-link');
-    document.getElementById(tabname).classList.add('active-tab');
+    (e?.currentTarget || event?.currentTarget)?.classList.add('active-link');
+    document.getElementById(tabname)?.classList.add('active-tab');
 }
 
 /* ===================== MOBILE MENU ===================== */
 var sidemenu = document.getElementById('sidemenu');
-function openmenu()  { sidemenu.style.right = '0'; }
-function closemenu() { sidemenu.style.right = '-280px'; }
+
+// Create backdrop element once
+var menuBackdrop = document.createElement('div');
+menuBackdrop.className = 'menu-backdrop';
+document.body.appendChild(menuBackdrop);
+menuBackdrop.addEventListener('click', closemenu);
+
+var _scrollPos = 0; // remember scroll position for iOS fix
+
+function openmenu() {
+    _scrollPos = window.scrollY;
+    sidemenu.style.right = '0';
+    menuBackdrop.classList.add('visible');
+    // iOS: position:fixed to lock body scroll
+    document.body.style.top = `-${_scrollPos}px`;
+    document.body.classList.add('menu-open');
+}
+
+function closemenu() {
+    sidemenu.style.right = '-280px';
+    menuBackdrop.classList.remove('visible');
+    // iOS: restore scroll position after unlocking
+    document.body.classList.remove('menu-open');
+    document.body.style.top = '';
+    window.scrollTo({ top: _scrollPos, behavior: 'instant' });
+}
 
 /* ===================== TYPING EFFECT ===================== */
 const typingEl  = document.getElementById('typing-target');
@@ -141,22 +295,22 @@ if (form) {
     const nameInput  = form.elements['Name'];
 
     emailInput?.addEventListener('input', () => {
-    const val = emailInput.value;
-    const hints = document.querySelectorAll('.email-hint');
-    const checks = [
-        { el: hints[0], ok: val.includes('@') },
-        { el: hints[1], ok: /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val) },
-    ];
-    checks.forEach(({ el, ok }) => {
-        if (!el) return;
-        el.style.color = ok ? 'rgba(74,222,128,0.85)' : 'var(--clr-muted)';
-        el.querySelector('i').className = ok
-            ? 'fa-solid fa-circle-check'
-            : 'fa-regular fa-circle';
-    });
-    emailInput.style.borderColor = checks[1].ok
-        ? 'rgba(74,222,128,0.5)'
-        : val.length > 0 ? 'rgba(239,68,68,0.4)' : '';
+        const val = emailInput.value;
+        const hints = document.querySelectorAll('.email-hint');
+        const checks = [
+            { el: hints[0], ok: val.includes('@') },
+            { el: hints[1], ok: /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val) },
+        ];
+        checks.forEach(({ el, ok }) => {
+            if (!el) return;
+            el.style.color = ok ? 'rgba(74,222,128,0.85)' : 'var(--clr-muted)';
+            el.querySelector('i').className = ok
+                ? 'fa-solid fa-circle-check'
+                : 'fa-regular fa-circle';
+        });
+        emailInput.style.borderColor = checks[1].ok
+            ? 'rgba(74,222,128,0.5)'
+            : val.length > 0 ? 'rgba(239,68,68,0.4)' : '';
     });
     nameInput?.addEventListener('blur', () => {
         nameInput.style.borderColor = nameInput.value.length >= 2 ? 'rgba(74,222,128,0.5)' : 'rgba(239,68,68,0.5)';
@@ -164,15 +318,15 @@ if (form) {
 
     form.addEventListener('submit', e => {
         e.preventDefault();
-        msg.innerHTML = 'Sending…'; msg.style.color = '#a79930';
+        msg.innerHTML = 'Sending\u2026'; msg.style.color = '#a79930';
         fetch(scriptURL, { method:'POST', body: new FormData(form) })
             .then(() => {
-                msg.innerHTML = '✓ Message sent!'; msg.style.color = '#4ade80';
+                msg.innerHTML = '\u2713 Message sent!'; msg.style.color = '#4ade80';
                 form.reset();
                 [emailInput, nameInput].forEach(el => { if(el) el.style.borderColor = ''; });
                 setTimeout(() => { msg.innerHTML = ''; }, 5000);
             })
-            .catch(() => { msg.innerHTML = '✗ Error — please try again.'; msg.style.color = '#f87171'; });
+            .catch(() => { msg.innerHTML = '\u2717 Error \u2014 please try again.'; msg.style.color = '#f87171'; });
     });
 }
 
@@ -189,17 +343,13 @@ const modalClose  = document.getElementById('modal-close');
 const modalBack   = document.getElementById('modal-backdrop');
 
 function openModal(data) {
-    // inject content
     modalSrc.src      = data.src;
     modalIndex.textContent = data.index;
     modalTitle.textContent = data.title;
     modalDesc.textContent  = data.desc;
     modalTags.innerHTML = data.tags.map(t => `<span>${t}</span>`).join('');
-
-    // load & play
     modalVideo.load();
     modalVideo.play();
-
     modal.classList.add('open');
     document.body.style.overflow = 'hidden';
 }
@@ -212,27 +362,22 @@ function closeModal() {
     document.body.style.overflow = '';
 }
 
-// Progress bar sync
 modalVideo.addEventListener('timeupdate', () => {
     if (!modalVideo.duration) return;
     modalProg.style.width = (modalVideo.currentTime / modalVideo.duration * 100) + '%';
 });
 
-// Close triggers
 modalClose.addEventListener('click', closeModal);
 modalBack.addEventListener('click', closeModal);
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
 
-// Hook every project-link to open modal
 document.querySelectorAll('.project-item').forEach(item => {
     const link = item.querySelector('.project-link');
     if (!link) return;
-
     link.addEventListener('click', e => {
         e.preventDefault();
         const videoEl  = item.querySelector('video source');
         const tags     = [...item.querySelectorAll('.project-tags span')].map(s => s.textContent);
-
         openModal({
             src:   videoEl?.src || '',
             index: item.querySelector('.project-index')?.textContent || '',
@@ -243,4 +388,84 @@ document.querySelectorAll('.project-item').forEach(item => {
     });
 });
 
-console.log('🔥 Portfolio ready.');
+/* ===================== SKILLS MARQUEE on About ===================== */
+function initSkillsMarquee() {
+    const skills = ['HTML / CSS', 'JavaScript', 'IoT Systems', 'UI / UX', 'React', 'Node.js', 'Python', 'Arduino', 'Figma', 'Git'];
+    const marqueeEl = document.createElement('div');
+    marqueeEl.className = 'skills-marquee';
+    const track = document.createElement('div');
+    track.className = 'skills-marquee-track';
+    [...skills, ...skills].forEach(s => {
+        const span = document.createElement('span');
+        span.textContent = s;
+        const sep = document.createElement('span');
+        sep.className = 'sep';
+        sep.textContent = '\u25C6';
+        track.appendChild(span);
+        track.appendChild(sep);
+    });
+    marqueeEl.appendChild(track);
+    const aboutSection = document.getElementById('about');
+    if (aboutSection) aboutSection.appendChild(marqueeEl);
+}
+initSkillsMarquee();
+
+/* ===================== 3D TILT on Project cards (desktop only) ===================== */
+if (window.innerWidth > 700) {
+    document.querySelectorAll('.project-item').forEach(card => {
+        card.addEventListener('mousemove', e => {
+            const rect = card.getBoundingClientRect();
+            const x = (e.clientX - rect.left) / rect.width  - 0.5;
+            const y = (e.clientY - rect.top)  / rect.height - 0.5;
+            card.style.transform = `perspective(900px) rotateY(${x * 4}deg) rotateX(${-y * 3}deg) scale(1.01)`;
+        });
+        card.addEventListener('mouseleave', () => {
+            card.style.transform = '';
+        });
+    });
+}
+
+/* ===================== SCROLL PROGRESS LINE ===================== */
+const progressLine = document.createElement('div');
+progressLine.className = 'scroll-progress-line';
+document.body.appendChild(progressLine);
+window.addEventListener('scroll', () => {
+    const total = document.body.scrollHeight - window.innerHeight;
+    const pct   = (window.scrollY / total) * 100;
+    progressLine.style.width = pct + '%';
+}, { passive: true });
+
+/* ===================== ANIMATED NOISE CANVAS (desktop only) ===================== */
+function initNoiseCanvas() {
+    if (window.innerWidth <= 700) return; // skip on mobile
+    const canvas = document.createElement('canvas');
+    canvas.className = 'noise-canvas';
+    document.body.appendChild(canvas);
+    const ctx = canvas.getContext('2d');
+    let frame = 0;
+
+    function resize() {
+        canvas.width  = window.innerWidth;
+        canvas.height = window.innerHeight;
+    }
+    resize();
+    window.addEventListener('resize', resize);
+
+    function drawNoise() {
+        const w = canvas.width, h = canvas.height;
+        const imageData = ctx.createImageData(w, h);
+        const data = imageData.data;
+        for (let i = 0; i < data.length; i += 4) {
+            const v = Math.random() * 18;
+            data[i] = data[i+1] = data[i+2] = v;
+            data[i+3] = 10;
+        }
+        ctx.putImageData(imageData, 0, 0);
+        frame++;
+        setTimeout(() => requestAnimationFrame(drawNoise), 50); // ~20fps noise
+    }
+    drawNoise();
+}
+initNoiseCanvas();
+
+console.log('\uD83D\uDD25 Portfolio \u2014 cinematic mode active.');
