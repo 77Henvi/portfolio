@@ -213,30 +213,21 @@ function opentab(tabname, e) {
 /* ===================== MOBILE MENU ===================== */
 var sidemenu = document.getElementById('sidemenu');
 
-// Create backdrop element once
 var menuBackdrop = document.createElement('div');
 menuBackdrop.className = 'menu-backdrop';
 document.body.appendChild(menuBackdrop);
 menuBackdrop.addEventListener('click', closemenu);
 
-var _scrollPos = 0; // remember scroll position for iOS fix
-
 function openmenu() {
-    _scrollPos = window.scrollY;
     sidemenu.style.right = '0';
     menuBackdrop.classList.add('visible');
-    // iOS: position:fixed to lock body scroll
-    document.body.style.top = `-${_scrollPos}px`;
-    document.body.classList.add('menu-open');
+    document.documentElement.style.overflow = 'hidden'; // lock html — works on iOS
 }
 
 function closemenu() {
     sidemenu.style.right = '-280px';
     menuBackdrop.classList.remove('visible');
-    // iOS: restore scroll position after unlocking
-    document.body.classList.remove('menu-open');
-    document.body.style.top = '';
-    window.scrollTo({ top: _scrollPos, behavior: 'instant' });
+    document.documentElement.style.overflow = '';
 }
 
 /* ===================== TYPING EFFECT ===================== */

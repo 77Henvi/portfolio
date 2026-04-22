@@ -788,10 +788,8 @@ nav .fa-bars { display: none; font-size: 22px; cursor: pointer; color: var(--clr
         gap: 4px;
         z-index: 600;
         transition: right 0.45s var(--ease-out);
-        overscroll-behavior: contain;   /* stop scroll bleed on Android */
-        -webkit-overflow-scrolling: auto; /* disable momentum scroll on iOS */
-        overflow-y: auto;               /* allow menu itself to scroll if content tall */
-        touch-action: pan-y;
+        overscroll-behavior: contain;
+        overflow-y: auto;
     }
     nav ul li a { font-size: 15px; padding: 14px 16px; display: block; }
     nav ul .fa-xmark { display: block !important; position: absolute; top: 28px; right: 28px; font-size: 22px; cursor: pointer; color: var(--clr-muted); }
@@ -833,22 +831,13 @@ nav .fa-bars { display: none; font-size: 22px; cursor: pointer; color: var(--clr
     body { cursor: auto; }
     .cursor-dot, .cursor-ring { display: none; }
 
-    /* iOS scroll lock — position:fixed preserves scroll position */
-    body.menu-open {
-        position: fixed;
-        width: 100%;
-        overflow-y: scroll; /* keep scrollbar width so layout doesn't jump */
-    }
-
     /* Backdrop behind menu — tap to close */
     .menu-backdrop {
         display: none;
         position: fixed;
         inset: 0;
-        background: rgba(0,0,0,0.5);
+        background: rgba(0,0,0,0.45);
         z-index: 590;
-        backdrop-filter: blur(2px);
-        -webkit-backdrop-filter: blur(2px);
     }
     .menu-backdrop.visible { display: block; }
 }
