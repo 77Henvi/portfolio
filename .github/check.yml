@@ -16,4 +16,3 @@ jobs:
       - name: Validate HTML
         run: |
           npx --yes html-validate index.html
-          
