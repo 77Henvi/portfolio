@@ -205,7 +205,7 @@ nav .fa-bars { display: none; font-size: 22px; cursor: pointer; color: var(--clr
     position: relative;
     z-index: 3;
     padding-top: calc(var(--nav-h) + 40px);
-    padding-bottom: 160px;
+    padding-bottom: 220px;
 }
 .hero-eyebrow {
     display: flex;
@@ -1098,7 +1098,7 @@ nav .fa-bars { display: none; font-size: 22px; cursor: pointer; color: var(--clr
     border-top: 1px solid var(--clr-border);
     border-bottom: 1px solid var(--clr-border);
     padding: 14px 0;
-    margin-top: 72px;
+    margin-top: 36px;
     position: relative;
 }
 .skills-marquee-track {
