@@ -16,7 +16,7 @@
 
     /* ---------- config ---------- */
     const GRAVITY        = 900;      // px/s^2 equivalent, tuned for feel
-    const LENGTH          = 130;     // px, pendulum "length" for the model
+    const LENGTH          = 220;     // px, pendulum "length" for the model (matches string length)
     const DAMPING_PER_SEC = 0.55;    // fraction of velocity lost per second (time-corrected)
     const MAX_ANGLE_DEG   = 35;      // clamp range, error-checklist #2
     const SLEEP_ANGLE_EPS = 0.15;    // deg
