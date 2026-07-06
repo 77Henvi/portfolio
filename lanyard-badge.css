@@ -10,8 +10,8 @@
    viewport top. This keeps the anchor stable across breakpoints. */
 .lanyard-pivot {
     position: absolute;
-    top: calc(var(--nav-h) + 28px);
-    right: 6%;
+    top: calc(var(--nav-h) + 12px);
+    left: 6%;
     width: 1px;
     height: 1px;
     z-index: 4; /* above hero-overlay(1) / grain(2) / ticker(3), below navbar(500) */
@@ -39,12 +39,12 @@
 }
 
 .lanyard-card {
-    width: 92px;
+    width: 96px;
     margin-top: -2px;
     background: var(--clr-card);
     border: 1px solid var(--clr-border);
-    border-radius: 8px;
-    padding: 10px 8px 12px;
+    border-radius: 10px;
+    padding: 10px;
     text-align: center;
     cursor: grab;
     pointer-events: auto;
@@ -70,11 +70,12 @@
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
 }
 
+/* Photo-only card content (MVP) */
 .lanyard-avatar {
-    width: 44px;
-    height: 44px;
-    margin: 0 auto 8px;
-    border-radius: 50%;
+    width: 76px;
+    height: 76px;
+    margin: 0 auto;
+    border-radius: 8px;
     overflow: hidden;
     border: 1px solid var(--clr-border);
     background: var(--clr-bg2);
@@ -86,43 +87,11 @@
     filter: grayscale(15%);
 }
 
-.lanyard-name {
-    font-family: var(--font-display);
-    font-size: 11px;
-    letter-spacing: 0.04em;
-    color: var(--clr-text);
-    line-height: 1.2;
-    margin-bottom: 4px;
-}
-
-.lanyard-role {
-    font-size: 8px;
-    color: var(--clr-muted);
-    line-height: 1.4;
-    margin-bottom: 6px;
-}
-
-.lanyard-org {
-    display: inline-block;
-    font-size: 8px;
-    font-weight: 500;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--clr-accent);
-    background: rgba(157, 59, 35, 0.12);
-    border: 1px solid rgba(157, 59, 35, 0.25);
-    padding: 2px 8px;
-    border-radius: 2px;
-}
-
 /* Tablet: shrink card + string proportionally */
 @media (max-width: 1023px) and (min-width: 701px) {
-    .lanyard-pivot { top: calc(var(--nav-h) + 20px); }
-    .lanyard-card { width: 76px; padding: 8px 6px 10px; }
-    .lanyard-avatar { width: 36px; height: 36px; }
-    .lanyard-name { font-size: 9.5px; }
-    .lanyard-role { font-size: 7px; }
-    .lanyard-org { font-size: 7px; padding: 2px 6px; }
+    .lanyard-pivot { top: calc(var(--nav-h) + 8px); }
+    .lanyard-card { width: 80px; padding: 8px; }
+    .lanyard-avatar { width: 62px; height: 62px; }
 }
 
 /* Mobile: the left/right negative space collapses in the stacked
