@@ -16,6 +16,7 @@
     height: 1px;
     z-index: 4; /* above hero-overlay(1) / grain(2) / ticker(3), below navbar(500) */
     pointer-events: none; /* only the card itself is interactive */
+    contain: layout style paint; /* isolate reflow/repaint from rest of hero */
 }
 
 /* Swing = the element that actually rotates. transform-origin is the
@@ -39,12 +40,13 @@
 }
 
 .lanyard-card {
+    position: relative;
     width: 96px;
-    margin-top: -2px;
-    background: var(--clr-card);
+    margin-top: -1px;
+    background: linear-gradient(165deg, #1a1613 0%, var(--clr-card) 45%, #0b0a09 100%);
     border: 1px solid var(--clr-border);
-    border-radius: 10px;
-    padding: 10px;
+    border-radius: 12px;
+    padding: 14px 10px 10px;
     text-align: center;
     cursor: grab;
     pointer-events: auto;
@@ -52,46 +54,90 @@
     user-select: none;
     -webkit-user-select: none;
     box-shadow:
-        0 14px 28px rgba(0, 0, 0, 0.45),
-        4px 10px 18px rgba(0, 0, 0, 0.25); /* soft depth cue */
-    transition: box-shadow 0.25s var(--ease-out);
+        0 10px 22px rgba(0, 0, 0, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.05),
+        inset 0 0 0 1px rgba(0, 0, 0, 0.3);
+    transition: box-shadow 0.25s var(--ease-out), transform 0.25s var(--ease-out), filter 0.25s;
+}
+
+/* punched grommet hole near the top edge, like a real ID card */
+.lanyard-card::before {
+    content: '';
+    position: absolute;
+    top: 5px;
+    left: 50%;
+    width: 7px;
+    height: 7px;
+    transform: translateX(-50%);
+    background: var(--clr-bg);
+    border-radius: 50%;
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.8), 0 1px 0 rgba(255, 255, 255, 0.06);
+    z-index: 2;
+}
+
+/* soft ground-shadow beneath the card that shifts with swing angle —
+   driven purely by `transform` (set in JS via --shadow-x), never by
+   animating box-shadow directly, to stay on the GPU compositing path */
+.lanyard-card::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 100%;
+    width: 68%;
+    height: 16px;
+    margin-top: 2px;
+    background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.4) 0%, transparent 72%);
+    transform: translateX(-50%) translateX(var(--shadow-x, 0px));
+    filter: blur(1px);
+    pointer-events: none;
+    z-index: -1;
+}
+
+.lanyard-card:hover {
+    box-shadow:
+        0 14px 30px rgba(0, 0, 0, 0.48),
+        inset 0 1px 0 rgba(255, 255, 255, 0.07),
+        inset 0 0 0 1px rgba(157, 59, 35, 0.35);
 }
 
 .lanyard-card.is-dragging {
     cursor: grabbing;
+    transition: none; /* no lag while actively dragging */
 }
 
 .lanyard-card-clip {
-    width: 22px;
-    height: 8px;
-    margin: -10px auto 8px;
-    background: linear-gradient(180deg, #cfcfcf, #8f8f8f);
-    border-radius: 3px;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+    width: 26px;
+    height: 9px;
+    margin: -18px auto 10px;
+    background: linear-gradient(180deg, #e2e2e2 0%, #a8a8a8 45%, #6f6f6f 100%);
+    border-radius: 3px 3px 2px 2px;
+    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.5);
 }
 
 /* Photo-only card content (MVP) */
 .lanyard-avatar {
-    width: 76px;
-    height: 76px;
+    width: 74px;
+    height: 74px;
     margin: 0 auto;
     border-radius: 8px;
     overflow: hidden;
-    border: 1px solid var(--clr-border);
+    border: 1px solid rgba(255, 255, 255, 0.08);
     background: var(--clr-bg2);
+    box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.35);
 }
 .lanyard-avatar img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    filter: grayscale(15%);
+    filter: grayscale(15%) contrast(1.05);
 }
 
 /* Tablet: shrink card + string proportionally */
 @media (max-width: 1023px) and (min-width: 701px) {
     .lanyard-pivot { top: calc(var(--nav-h) + 8px); }
-    .lanyard-card { width: 80px; padding: 8px; }
-    .lanyard-avatar { width: 62px; height: 62px; }
+    .lanyard-card { width: 80px; padding: 12px 8px 8px; }
+    .lanyard-card-clip { width: 22px; height: 8px; margin: -15px auto 8px; }
+    .lanyard-avatar { width: 60px; height: 60px; }
 }
 
 /* Mobile: the left/right negative space collapses in the stacked

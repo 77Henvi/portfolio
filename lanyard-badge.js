@@ -42,14 +42,24 @@
     let isInViewport = true;
     let isTabVisible = document.visibilityState !== 'hidden';
     let activePointerId = null;
+    let cachedPivotRect = null;
+    let resizeRafId = null;
 
     /* ---------- helpers ---------- */
     function clampAngle(a) {
         return Math.max(-MAX_ANGLE_DEG, Math.min(MAX_ANGLE_DEG, a));
     }
 
+    function refreshPivotRect() {
+        cachedPivotRect = pivot.getBoundingClientRect();
+    }
+
     function render() {
         swing.style.transform = `rotate(${angle}deg)`;
+        // ground-shadow shifts opposite-ish to swing direction — transform only,
+        // never animates box-shadow directly (keeps this on the GPU path)
+        const shadowPx = (angle * 0.6).toFixed(2);
+        card.style.setProperty('--shadow-x', shadowPx + 'px');
     }
 
     function setWillChange(on) {
@@ -138,12 +148,12 @@
 
     /* ---------- drag handling (section 4.2) ---------- */
     function pivotCenterX() {
-        const rect = pivot.getBoundingClientRect();
-        return rect.left + rect.width / 2;
+        if (!cachedPivotRect) refreshPivotRect();
+        return cachedPivotRect.left + cachedPivotRect.width / 2;
     }
     function pivotCenterY() {
-        const rect = pivot.getBoundingClientRect();
-        return rect.top;
+        if (!cachedPivotRect) refreshPivotRect();
+        return cachedPivotRect.top;
     }
 
     function angleFromPointer(clientX, clientY) {
@@ -161,6 +171,7 @@
 
         activePointerId = e.pointerId;
         dragging = true;
+        refreshPivotRect(); // one layout read per drag session, not per pointermove
         clearTimeout(idleTimeoutId);
         card.classList.add('is-dragging');
         card.setPointerCapture && card.setPointerCapture(e.pointerId);
@@ -241,6 +252,17 @@
     }
     document.addEventListener('visibilitychange', onVisibilityChange);
 
+    /* ---------- keep cached pivot rect accurate on resize/orientation change ---------- */
+    function onResize() {
+        if (resizeRafId !== null) return;
+        resizeRafId = requestAnimationFrame(() => {
+            resizeRafId = null;
+            cachedPivotRect = null; // force re-read next time it's needed
+            if (!dragging) refreshPivotRect();
+        });
+    }
+    window.addEventListener('resize', onResize, { passive: true });
+
     /* ---------- reduced motion: static, no idle swing / momentum ---------- */
     if (prefersReducedMotion) {
         angle = 0;
@@ -258,6 +280,7 @@
         clearTimeout(idleTimeoutId);
         io.disconnect();
         document.removeEventListener('visibilitychange', onVisibilityChange);
+        window.removeEventListener('resize', onResize);
         document.removeEventListener('pointermove', onPointerMove);
         document.removeEventListener('pointerup', onPointerUp);
         document.removeEventListener('pointercancel', onPointerUp);

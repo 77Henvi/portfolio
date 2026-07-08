@@ -29,6 +29,10 @@
 </head>
 <body>
 
+<!-- Custom cursor -->
+<div class="cursor-dot"></div>
+<div class="cursor-ring"></div>
+
 <!-- Loader -->
 <div id="loader">
     <div class="loader-inner">
@@ -66,8 +70,16 @@
     <!-- ====== LANYARD BADGE (2D, no WebGL) ====== -->
     <div class="lanyard-pivot" id="lanyardPivot" aria-hidden="true">
         <div class="lanyard-swing" id="lanyardSwing">
-            <svg class="lanyard-string" width="3" height="220" viewBox="0 0 3 220">
-                <path d="M1.5,0 Q1.5,110 1.5,220" stroke="#4a3a30" stroke-width="2" fill="none"/>
+            <svg class="lanyard-string" width="6" height="222" viewBox="0 0 6 222">
+                <defs>
+                    <linearGradient id="lanyardStringGrad" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stop-color="#5a463a"/>
+                        <stop offset="100%" stop-color="#2d2119"/>
+                    </linearGradient>
+                </defs>
+                <path d="M3,0 Q3,111 3,220" stroke="url(#lanyardStringGrad)" stroke-width="2.5"
+                      stroke-linecap="round" fill="none"
+                      style="filter:drop-shadow(1px 2px 2px rgba(0,0,0,0.4));"/>
             </svg>
             <div class="lanyard-card" id="lanyardCard">
                 <div class="lanyard-card-clip"></div>
@@ -183,7 +195,7 @@
             <div class="project-item stagger-reveal">
                 <div class="project-video-wrap">
                     <video autoplay muted loop playsinline preload="none">
-                        <source src="videos/ladyvenice2.mp4"type="video/mp4">
+                        <source src="videos/tradetrack.mp4"type="video/mp4">
                     </video>
                     <div class="project-video-overlay"></div>
                 </div>
@@ -193,8 +205,8 @@
                         <div class="project-tags"><span>IoT</span><span>Websites</span></div>
                     </div>
                     <h3 class="project-title">
-                        <a href="https://lady-venice-sheets.vercel.app/catalog.html" target="_blank" rel="noopener noreferrer" style="color:inherit;text-decoration:none;">LadyVenice</h3>
-                    <p class="project-desc">เว็บไซต์แคตตาล็อกช่อดอกไม้</p>
+                        <a href="https://trade-track-xi.vercel.app/" target="_blank" rel="noopener noreferrer" style="color:inherit;text-decoration:none;">TradeTrack!</h3>
+                    <p class="project-desc">เว็บไซต์ติดตามและจดบันทึกสถิติการเทรด Forex / CFD</p>
                     <a href="#" class="project-link magnetic"><span>View Project</span><i class="fa-solid fa-arrow-up-right"></i></a>
                 </div>
             </div>
@@ -240,7 +252,7 @@
             <div class="project-item stagger-reveal">
                 <div class="project-video-wrap">
                     <video autoplay muted loop playsinline preload="none">
-                        <source src="videos/tradetrack.mp4" type="video/mp4">
+                        <source src="videos/phrase.mp4" type="video/mp4">
                     </video>
                     <div class="project-video-overlay"></div>
                 </div>
@@ -249,8 +261,8 @@
                         <span class="project-index">04</span>
                         <div class="project-tags"><span>Game</span><span>JavaScript</span></div>
                     </div>
-                    <h3 class="project-title">TradeTrack!</h3>
-                    <p class="project-desc">เว็บไซต์ติดตามและจดบันทึกสถิติการเทรด Forex / CFD</p>
+                    <h3 class="project-title">Gamemaker Challenge</h3>
+                    <p class="project-desc">เกมประเภท Side scrolling พร้อมระบบทำคะแนนสูงสุด และเพิ่มความยากอัตโนมัติ</p>
                     <a href="#" class="project-link magnetic"><span>View Project</span><i class="fa-solid fa-arrow-up-right"></i></a>
                 </div>
             </div>
