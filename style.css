@@ -33,32 +33,6 @@ img, video { display: block; max-width: 100%; }
 ::-webkit-scrollbar-track { background: var(--clr-bg); }
 ::-webkit-scrollbar-thumb { background: var(--clr-accent); }
 
-/* ===================== CURSOR ===================== */
-.cursor-dot, .cursor-ring {
-    position: fixed;
-    border-radius: 50%;
-    pointer-events: none;
-    z-index: 9999;
-    mix-blend-mode: difference;
-    transition: opacity 0.3s;
-}
-.cursor-dot {
-    width: 8px; height: 8px;
-    background: #fff;
-    transform: translate(-50%, -50%);
-    transition: width 0.2s, height 0.2s;
-}
-.cursor-ring {
-    width: 36px; height: 36px;
-    border: 1.5px solid rgba(255,255,255,0.6);
-    transform: translate(-50%, -50%);
-    transition: width 0.3s var(--ease-out),
-                height 0.3s var(--ease-out),
-                border-color 0.3s,
-                background 0.3s;
-}
-body:has(a:hover) .cursor-ring,
-body:has(button:hover) .cursor-ring { width: 56px; height: 56px; }
 
 /* ===================== LOADER ===================== */
 #loader {
