@@ -22,15 +22,12 @@
     <!-- Theme color (mobile browser bar) -->
     <meta name="theme-color" content="#9d3b23">
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="lanyard-badge.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
 </head>
 <body>
-
-<!-- Custom cursor -->
-<div class="cursor-dot"></div>
-<div class="cursor-ring"></div>
 
 <!-- Loader -->
 <div id="loader">
@@ -64,6 +61,19 @@
         <img src="images/background.jpg" alt="" class="hero-bg-img">
         <div class="hero-overlay"></div>
         <div class="grain-overlay"></div>
+    </div>
+
+    <!-- ====== LANYARD BADGE (2D, no WebGL) ====== -->
+    <div class="lanyard-pivot" id="lanyardPivot" aria-hidden="true">
+        <div class="lanyard-swing" id="lanyardSwing">
+            <svg class="lanyard-string" width="3" height="220" viewBox="0 0 3 220">
+                <path d="M1.5,0 Q1.5,110 1.5,220" stroke="#4a3a30" stroke-width="2" fill="none"/>
+            </svg>
+            <div class="lanyard-card" id="lanyardCard">
+                <div class="lanyard-card-clip"></div>
+                <div class="lanyard-avatar"><img src="images/portrait.jpg" alt="" draggable="false"></div>
+            </div>
+        </div>
     </div>
 
     <div class="hero-content container">
@@ -369,5 +379,6 @@
 </div>
 
 <script src="script.js"></script>
+<script src="lanyard-badge.js"></script>
 </body>
 </html>
