@@ -126,6 +126,42 @@ splitTitles.forEach(el => titleObs.observe(el));
 
 /* Project items already use .stagger-reveal — no extra delay override needed */
 
+/* ===================== SCROLL-LINKED LINE REVEAL (sixmorevodka "Chinaski" style) =====================
+   Splits target text (marked with .scroll-lines) into per-line spans by <br>,
+   then ties each line's opacity/translateY directly to scroll position instead of
+   a one-shot IntersectionObserver — so the text "scrubs" in and out with the scroll,
+   matching the reference site's pinned text reveal. */
+function initScrollLineReveal() {
+    const targets = document.querySelectorAll('.scroll-lines');
+    targets.forEach(target => {
+        if (target.dataset.linesplit) return;
+        target.dataset.linesplit = 'true';
+        const rawLines = target.innerHTML.split(/<br\s*\/?>/i);
+        target.innerHTML = rawLines
+            .map(line => `<span class="scroll-line-inner"><span class="scroll-line-content">${line.trim()}</span></span>`)
+            .join('');
+    });
+}
+initScrollLineReveal();
+
+const scrollLineEls = [...document.querySelectorAll('.scroll-line-content')];
+
+function updateScrollLines() {
+    if (!scrollLineEls.length) return;
+    const vh = window.innerHeight;
+    scrollLineEls.forEach((el, i) => {
+        const rect = el.getBoundingClientRect();
+        // progress 0 → line just entering bottom of viewport, 1 → settled near center
+        let progress = (vh * 0.9 - rect.top) / (vh * 0.55);
+        progress = Math.min(Math.max(progress, 0), 1);
+        el.style.opacity = progress;
+        el.style.transform = `translateY(${(1 - progress) * 40}%)`;
+    });
+}
+window.addEventListener('scroll', updateScrollLines, { passive: true });
+window.addEventListener('resize', updateScrollLines);
+updateScrollLines();
+
 /* ===================== SECTION NUMBER COUNT-UP ===================== */
 document.querySelectorAll('.section-number').forEach(el => {
     const target = parseInt(el.textContent, 10);
