@@ -25,14 +25,12 @@ body {
     font-family: var(--font-body);
     line-height: 1.75;
     overflow-x: hidden;
-    cursor: none;
 }
 a { text-decoration: none; color: inherit; }
 img, video { display: block; max-width: 100%; }
 ::-webkit-scrollbar { width: 3px; }
 ::-webkit-scrollbar-track { background: var(--clr-bg); }
 ::-webkit-scrollbar-thumb { background: var(--clr-accent); }
-
 
 /* ===================== LOADER ===================== */
 #loader {
@@ -113,7 +111,6 @@ nav ul li a {
     padding: 8px 16px;
     border-radius: 6px;
     transition: color 0.2s, background 0.2s;
-    cursor: none;
 }
 nav ul li a:hover, nav ul li a.active-nav {
     color: var(--clr-text);
@@ -256,7 +253,7 @@ nav .fa-bars { display: none; font-size: 22px; cursor: pointer; color: var(--clr
     padding: 14px 30px;
     border-radius: 4px;
     border: none;
-    cursor: none;
+    cursor: pointer;
     transition: background 0.25s, transform 0.25s, box-shadow 0.25s;
 }
 .btn-main:hover {
@@ -276,7 +273,7 @@ nav .fa-bars { display: none; font-size: 22px; cursor: pointer; color: var(--clr
     padding: 14px 30px;
     border-radius: 4px;
     border: 1px solid var(--clr-border);
-    cursor: none;
+    cursor: pointer;
     transition: border-color 0.25s, color 0.25s, background 0.25s;
 }
 .btn-ghost:hover {
@@ -473,7 +470,7 @@ nav .fa-bars { display: none; font-size: 22px; cursor: pointer; color: var(--clr
     color: var(--clr-muted);
     padding: 10px 20px 10px 0;
     margin-right: 24px;
-    cursor: none;
+    cursor: pointer;
     position: relative;
     transition: color 0.2s;
 }
@@ -604,7 +601,7 @@ nav .fa-bars { display: none; font-size: 22px; cursor: pointer; color: var(--clr
     letter-spacing: 0.08em;
     text-transform: uppercase;
     color: var(--clr-accent);
-    cursor: none;
+    cursor: pointer;
     transition: gap 0.25s, color 0.25s;
     width: fit-content;
 }
@@ -665,7 +662,7 @@ nav .fa-bars { display: none; font-size: 22px; cursor: pointer; color: var(--clr
     justify-content: center;
     color: var(--clr-muted);
     font-size: 17px;
-    cursor: none;
+    cursor: pointer;
     transition: all 0.25s;
 }
 .social-icons a:hover {
@@ -732,7 +729,7 @@ nav .fa-bars { display: none; font-size: 22px; cursor: pointer; color: var(--clr
     letter-spacing: 0.1em;
     text-transform: uppercase;
     color: var(--clr-muted);
-    cursor: none;
+    cursor: pointer;
     transition: color 0.2s;
 }
 .back-top:hover { color: var(--clr-accent); }
@@ -802,9 +799,6 @@ nav .fa-bars { display: none; font-size: 22px; cursor: pointer; color: var(--clr
     #about, #project, #contact { padding: 80px 0; }
     .section-header { margin-bottom: 36px; }
 
-    body { cursor: auto; }
-    .cursor-dot, .cursor-ring { display: none; }
-
     /* Backdrop behind menu — tap to close */
     .menu-backdrop {
         display: none;
@@ -843,7 +837,6 @@ nav .fa-bars { display: none; font-size: 22px; cursor: pointer; color: var(--clr
     background: rgba(4, 2, 2, 0.92);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
-    cursor: none;
 }
 .modal-box {
     position: relative;
@@ -944,7 +937,7 @@ nav .fa-bars { display: none; font-size: 22px; cursor: pointer; color: var(--clr
     justify-content: center;
     color: var(--clr-muted);
     font-size: 18px;
-    cursor: none;
+    cursor: pointer;
     transition: all 0.2s;
 }
 .modal-close:hover {
@@ -1006,30 +999,6 @@ nav .fa-bars { display: none; font-size: 22px; cursor: pointer; color: var(--clr
     z-index: 1;
     opacity: 0.6;
     mix-blend-mode: overlay;
-}
-
-/* --- Cursor label (VIEW on project hover) --- */
-.cursor-label {
-    position: fixed;
-    pointer-events: none;
-    z-index: 9998;
-    font-family: var(--font-display);
-    font-size: 11px;
-    letter-spacing: 0.18em;
-    color: #fff;
-    transform: translate(-50%, -50%);
-    opacity: 0;
-    transition: opacity 0.25s var(--ease-out), transform 0.25s var(--ease-out);
-    mix-blend-mode: difference;
-}
-.cursor-label.visible {
-    opacity: 1;
-}
-.cursor-ring.cursor-expand {
-    width: 72px !important;
-    height: 72px !important;
-    border-color: rgba(255,255,255,0.9) !important;
-    background: rgba(157,59,35,0.15);
 }
 
 /* --- Loader glitch effect --- */
@@ -1108,14 +1077,11 @@ nav .fa-bars { display: none; font-size: 22px; cursor: pointer; color: var(--clr
     height: 24px;
 }
 
-/* --- Project item 3D tilt smooth --- */
-
 /* ===================== CINEMATIC — MOBILE RESPONSIVE ===================== */
 @media (max-width: 700px) {
 
-    /* Kill noise canvas & cursor label — too heavy on mobile */
+    /* Kill noise canvas — too heavy on mobile */
     .noise-canvas  { display: none; }
-    .cursor-label  { display: none; }
 
     /* Parallax: reset all JS-driven transforms so content stays in place */
     .hero-content  { transform: none !important; }
@@ -1151,5 +1117,3 @@ nav .fa-bars { display: none; font-size: 22px; cursor: pointer; color: var(--clr
         transition-delay: calc(var(--ci) * 0.014s);
     }
 }
-
-

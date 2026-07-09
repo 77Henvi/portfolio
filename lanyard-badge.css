@@ -16,7 +16,8 @@
     height: 1px;
     z-index: 4; /* above hero-overlay(1) / grain(2) / ticker(3), below navbar(500) */
     pointer-events: none; /* only the card itself is interactive */
-    contain: layout style paint; /* isolate reflow/repaint from rest of hero */
+    contain: style; /* isolate style recalcs only — NOT layout/paint, which would
+                        clip children to this 1x1px box and hide the badge */
 }
 
 /* Swing = the element that actually rotates. transform-origin is the

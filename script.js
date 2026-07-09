@@ -1,4 +1,3 @@
-
 /* ===================== LOADER — glitch flash ===================== */
 window.addEventListener('load', () => {
     const loaderName = document.querySelector('.loader-name');
