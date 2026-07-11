@@ -126,44 +126,34 @@ splitTitles.forEach(el => titleObs.observe(el));
 
 /* Project items already use .stagger-reveal — no extra delay override needed */
 
-/* ===================== GSAP SCROLL OVERLAP PIN (sixmorevodka-style) =====================
-   Only Header → About get the pin/overlap treatment — both are short,
-   single-screen sections where "cover the previous one" reads well.
-   Project has many items the person needs to scroll through normally,
-   so it stays in regular flow and gets a per-card reveal instead (below). */
+/* ===================== GSAP HORIZONTAL PROJECT SCROLL =====================
+   Project section pins in place while vertical scroll drives the card track
+   horizontally — so you scroll down like normal, but the projects themselves
+   move sideways. Falls back to a normal vertical stack on mobile (see CSS). */
 gsap.registerPlugin(ScrollTrigger);
 
-function initOverlapPin() {
-    const el = document.querySelector('#header');
-    if (!el) return;
-    ScrollTrigger.create({
-        trigger: el,
-        start: 'top top',
-        end: 'bottom top',
-        pin: true,
-        pinSpacing: false,
-        anticipatePin: 1
+function initHorizontalProjects() {
+    const wrap = document.querySelector('.project-scroll-wrap');
+    const track = document.querySelector('.project-list');
+    if (!wrap || !track || window.innerWidth <= 700) return;
+
+    const getScrollDistance = () => track.scrollWidth - wrap.clientWidth;
+
+    gsap.to(track, {
+        x: () => -getScrollDistance(),
+        ease: 'none',
+        scrollTrigger: {
+            trigger: '#project',
+            start: 'top top',
+            end: () => `+=${getScrollDistance()}`,
+            pin: true,
+            scrub: 1,
+            invalidateOnRefresh: true,
+            anticipatePin: 1
+        }
     });
-
-    // #about visually covers #header as it scrolls up; everything after is normal flow
-    const about = document.querySelector('#about');
-    if (about) {
-        about.style.position = 'relative';
-        about.style.zIndex = 2;
-        about.style.boxShadow = '0 -40px 80px rgba(0,0,0,0.45)';
-    }
-    el.style.position = 'relative';
-    el.style.zIndex = 1;
 }
-
-// Overlap pin feels heavy on small screens with long content — desktop/tablet only
-if (window.innerWidth > 700) {
-    initOverlapPin();
-}
-
-/* Project cards keep using the existing .stagger-reveal IntersectionObserver system
-   below (see "STAGGER REVEAL" section) — no GSAP animation added here, since
-   they already fade/slide in one by one as the person scrolls through normally. */
+initHorizontalProjects();
 
 /* ===================== SCROLL-LINKED LINE REVEAL (GSAP scrub, "Chinaski" style) =====================
    Splits target text (marked with .scroll-lines) into per-line spans by <br>,
@@ -492,4 +482,4 @@ function initNoiseCanvas() {
 }
 initNoiseCanvas();
 
-console.log('\uD83D\uDD25 Portfolio \u2014 cinematic mode active.');ห
+console.log('\uD83D\uDD25 Portfolio \u2014 cinematic mode active.');

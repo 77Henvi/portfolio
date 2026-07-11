@@ -340,9 +340,9 @@ nav .fa-bars { display: none; font-size: 22px; cursor: pointer; color: var(--clr
 #project { background: var(--clr-bg); }
 #contact { background: var(--clr-bg2); border-top: 1px solid var(--clr-border); }
 
-/* Sticky/z-index overlap is now handled by GSAP ScrollTrigger (see script.js),
-   which pins sections and animates them precisely instead of relying on
-   pure CSS position:sticky (which broke due to the body overflow-x context). */
+/* Header/About are back to plain normal-flow scrolling (the pin/overlap version
+   caused a black-screen bug). Project section now scrolls horizontally instead
+   — see GSAP horizontal scroll code in script.js. */
 
 .section-header {
     display: flex;
@@ -511,14 +511,22 @@ nav .fa-bars { display: none; font-size: 22px; cursor: pointer; color: var(--clr
 }
 
 /* ===================== PROJECTS ===================== */
+.project-scroll-wrap {
+    overflow: hidden;
+}
 .project-list {
     display: flex;
-    flex-direction: column;
-    gap: 2px;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    gap: 24px;
+    width: max-content;
+    padding: 0 5vw;
 }
 .project-item {
     display: grid;
     grid-template-columns: 1fr 1fr;
+    flex: 0 0 auto;
+    width: min(80vw, 920px);
     gap: 0;
     background: var(--clr-card);
     border: 1px solid var(--clr-border);
@@ -750,6 +758,11 @@ nav .fa-bars { display: none; font-size: 22px; cursor: pointer; color: var(--clr
 }
 
 @media (max-width: 700px) {
+    /* Horizontal scroll-jack is a poor fit for touch — fall back to a normal vertical stack */
+    .project-list { flex-direction: column; width: auto; padding: 0; gap: 16px; }
+    .project-item { width: auto; }
+    .project-scroll-wrap { overflow: visible; }
+
     nav ul {
         background: var(--clr-bg2);
         border-left: 1px solid var(--clr-border);
