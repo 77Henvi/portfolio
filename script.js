@@ -127,40 +127,43 @@ splitTitles.forEach(el => titleObs.observe(el));
 /* Project items already use .stagger-reveal — no extra delay override needed */
 
 /* ===================== GSAP SCROLL OVERLAP PIN (sixmorevodka-style) =====================
-   Pins each section in place while the next one slides up and covers it —
-   this replaces the old CSS position:sticky version, which broke because
-   `body { overflow-x: hidden }` created a bad scroll context. GSAP's pin
-   builds its own spacer + fixed positioning under the hood, so it isn't
-   affected by that at all, and is the same technique agency sites use. */
+   Only Header → About get the pin/overlap treatment — both are short,
+   single-screen sections where "cover the previous one" reads well.
+   Project has many items the person needs to scroll through normally,
+   so it stays in regular flow and gets a per-card reveal instead (below). */
 gsap.registerPlugin(ScrollTrigger);
 
 function initOverlapPin() {
-    const sections = ['#header', '#about', '#project']; // #contact is the final layer, stays normal
-    sections.forEach((sel, i) => {
-        const el = document.querySelector(sel);
-        if (!el) return;
-        ScrollTrigger.create({
-            trigger: el,
-            start: 'top top',
-            end: 'bottom top',
-            pin: true,
-            pinSpacing: false,
-            anticipatePin: 1
-        });
+    const el = document.querySelector('#header');
+    if (!el) return;
+    ScrollTrigger.create({
+        trigger: el,
+        start: 'top top',
+        end: 'bottom top',
+        pin: true,
+        pinSpacing: false,
+        anticipatePin: 1
     });
 
-    // Give every pinned section a rising z-index so later ones visually cover earlier ones
-    gsap.utils.toArray('#header, #about, #project, #contact').forEach((el, i) => {
-        el.style.position = 'relative';
-        el.style.zIndex = i + 1;
-        if (i > 0) el.style.boxShadow = '0 -40px 80px rgba(0,0,0,0.45)';
-    });
+    // #about visually covers #header as it scrolls up; everything after is normal flow
+    const about = document.querySelector('#about');
+    if (about) {
+        about.style.position = 'relative';
+        about.style.zIndex = 2;
+        about.style.boxShadow = '0 -40px 80px rgba(0,0,0,0.45)';
+    }
+    el.style.position = 'relative';
+    el.style.zIndex = 1;
 }
 
 // Overlap pin feels heavy on small screens with long content — desktop/tablet only
 if (window.innerWidth > 700) {
     initOverlapPin();
 }
+
+/* Project cards keep using the existing .stagger-reveal IntersectionObserver system
+   below (see "STAGGER REVEAL" section) — no GSAP animation added here, since
+   they already fade/slide in one by one as the person scrolls through normally. */
 
 /* ===================== SCROLL-LINKED LINE REVEAL (GSAP scrub, "Chinaski" style) =====================
    Splits target text (marked with .scroll-lines) into per-line spans by <br>,
@@ -489,4 +492,4 @@ function initNoiseCanvas() {
 }
 initNoiseCanvas();
 
-console.log('\uD83D\uDD25 Portfolio \u2014 cinematic mode active.');
+console.log('\uD83D\uDD25 Portfolio \u2014 cinematic mode active.');ห
