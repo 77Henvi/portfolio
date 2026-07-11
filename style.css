@@ -18,7 +18,7 @@
 
 /* ===================== RESET ===================== */
 *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
-html { scroll-behavior: smooth; font-size: 16px; overflow-x: hidden; }
+html { scroll-behavior: smooth; font-size: 16px; overflow-x: hidden; scroll-snap-type: y proximity; }
 body {
     background: var(--clr-bg);
     color: var(--clr-text);
@@ -373,10 +373,22 @@ nav .fa-bars { display: none; font-size: 22px; cursor: pointer; color: var(--clr
 }
 
 /* ===================== SECTION SHARED ===================== */
-#about, #project, #contact { padding: 120px 0; position: relative; }
+#about, #project, #contact {
+    padding: 120px 0;
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
 #about  { background: var(--clr-bg2); border-top: 1px solid var(--clr-border); }
 #project { background: var(--clr-bg); }
 #contact { background: var(--clr-bg2); border-top: 1px solid var(--clr-border); }
+
+/* Fitted-to-screen scroll: each section snaps to fill the viewport as you scroll.
+   Project is excluded — it's pinned + scrolled horizontally by GSAP, and snap
+   would fight with that pin's own scroll-distance math. */
+#header, #about, #contact { scroll-snap-align: start; }
 
 /* Header/About are back to plain normal-flow scrolling (the pin/overlap version
    caused a black-screen bug). Project section now scrolls horizontally instead
