@@ -34,41 +34,79 @@ img, video { display: block; max-width: 100%; }
 /* ===================== LOADER ===================== */
 #loader {
     position: fixed; inset: 0;
-    background: var(--clr-bg);
     z-index: 10000;
+    background: var(--clr-bg);
+}
+#loader.done { pointer-events: none; }
+
+.loader-content {
+    position: relative;
+    z-index: 2;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 32px 40px 40px;
+    transition: opacity 0.5s var(--ease-out), transform 0.6s var(--ease-out);
+}
+#loader.done .loader-content { opacity: 0; transform: translateY(-16px); }
+
+.loader-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--clr-muted);
+}
+.loader-main {
+    flex: 1;
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: opacity 0.6s var(--ease-out), visibility 0.6s;
 }
-#loader.done { opacity: 0; visibility: hidden; }
-.loader-inner { text-align: center; }
 .loader-name {
     display: block;
     font-family: var(--font-display);
-    font-size: clamp(48px, 8vw, 100px);
-    letter-spacing: 0.15em;
-    color: var(--clr-accent);
-    margin-bottom: 24px;
+    font-size: clamp(48px, 9vw, 120px);
+    letter-spacing: 0.1em;
+    color: var(--clr-text);
+    position: relative;
 }
+.loader-bottom { gap: 24px; }
 .loader-bar {
-    width: 200px;
+    flex: 1;
     height: 2px;
-    background: rgba(255,255,255,0.1);
-    margin: 0 auto;
+    background: rgba(255,255,255,0.12);
     border-radius: 2px;
     overflow: hidden;
 }
 .loader-progress {
     height: 100%;
+    width: 0%;
     background: var(--clr-accent);
     border-radius: 2px;
-    animation: load 1.4s var(--ease-out) forwards;
 }
-@keyframes load {
-    from { width: 0; }
-    to   { width: 100%; }
+.loader-percent {
+    font-family: var(--font-display);
+    font-size: 14px;
+    color: var(--clr-accent);
+    min-width: 44px;
+    text-align: right;
+    letter-spacing: 0.05em;
 }
+
+/* Split curtain panels — slide apart on exit instead of a plain fade */
+.loader-curtain {
+    position: absolute;
+    top: 0; bottom: 0;
+    width: 50%;
+    background: var(--clr-bg);
+    z-index: 1;
+}
+.loader-curtain-l { left: 0; border-right: 1px solid var(--clr-border); }
+.loader-curtain-r { right: 0; border-left: 1px solid var(--clr-border); }
 
 /* ===================== GRAIN ===================== */
 .grain-overlay {

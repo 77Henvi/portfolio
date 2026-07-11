@@ -1,19 +1,73 @@
-/* ===================== LOADER — glitch flash ===================== */
-window.addEventListener('load', () => {
-    const loaderName = document.querySelector('.loader-name');
-    let glitchCount = 0;
-    const glitchInterval = setInterval(() => {
-        if (!loaderName) { clearInterval(glitchInterval); return; }
-        loaderName.classList.add('glitch');
-        setTimeout(() => loaderName?.classList.remove('glitch'), 80);
-        glitchCount++;
-        if (glitchCount >= 3) clearInterval(glitchInterval);
-    }, 300);
+/* ===================== LOADER — real progress + curtain-split exit ===================== */
+(function () {
+    const loaderEl   = document.getElementById('loader');
+    const countEl    = document.getElementById('loaderCount');
+    const progressEl = document.querySelector('.loader-progress');
+    const nameEl     = document.querySelector('.loader-name');
+    if (!loaderEl) return;
 
-    setTimeout(() => {
-        document.getElementById('loader')?.classList.add('done');
-    }, 1600);
-});
+    let displayed = 0;   // number currently shown
+    let target = 0;      // where it's climbing toward
+    let pageLoaded = false;
+    let finished = false;
+
+    function setBar(pct) {
+        if (progressEl) progressEl.style.width = pct + '%';
+        if (countEl) countEl.textContent = Math.round(pct);
+    }
+
+    // Climb smoothly toward `target`, capped under 90 until the page actually finishes loading
+    function tick() {
+        if (finished) return;
+        const ceiling = pageLoaded ? 100 : 90;
+        target = Math.min(target + Math.random() * 4 + 1, ceiling);
+        displayed += (target - displayed) * 0.2;
+        setBar(displayed);
+
+        if (pageLoaded && displayed > 99) {
+            setBar(100);
+            finishLoader();
+            return;
+        }
+        requestAnimationFrame(() => setTimeout(tick, 40));
+    }
+
+    // Occasional glitch flash on the name, purely cosmetic, runs while loading
+    let glitching = true;
+    (function glitchLoop() {
+        if (!glitching || !nameEl) return;
+        nameEl.classList.add('glitch');
+        setTimeout(() => nameEl.classList.remove('glitch'), 90);
+        setTimeout(glitchLoop, 500 + Math.random() * 700);
+    })();
+
+    function finishLoader() {
+        if (finished) return;
+        finished = true;
+        glitching = false;
+
+        const exit = () => {
+            loaderEl.classList.add('done');
+            const curtainL = document.querySelector('.loader-curtain-l');
+            const curtainR = document.querySelector('.loader-curtain-r');
+            if (typeof gsap !== 'undefined' && curtainL && curtainR) {
+                gsap.to(curtainL, { xPercent: -100, duration: 0.9, ease: 'power4.inOut', delay: 0.15 });
+                gsap.to(curtainR, { xPercent: 100, duration: 0.9, ease: 'power4.inOut', delay: 0.15,
+                    onComplete: () => { loaderEl.style.display = 'none'; } });
+            } else {
+                // No GSAP available — fall back to a plain hide
+                setTimeout(() => { loaderEl.style.display = 'none'; }, 700);
+            }
+        };
+        setTimeout(exit, 250); // brief pause on "100%" so it reads before the reveal
+    }
+
+    window.addEventListener('load', () => { pageLoaded = true; });
+    // Safety net: never let a slow asset hold the loader hostage forever
+    setTimeout(() => { pageLoaded = true; }, 4000);
+
+    tick();
+})();
 
 /* ===================== NAVBAR SCROLL ===================== */
 const navbar = document.getElementById('navbar');
