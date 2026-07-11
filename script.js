@@ -187,6 +187,50 @@ function initScrollLineReveal() {
 }
 initScrollLineReveal();
 
+/* ===================== ABOUT — POLISHED COMPONENT REVEALS ===================== */
+function initAboutReveal() {
+    const wrap  = document.querySelector('.about-img-wrap');
+    const frame = document.querySelector('.about-img-frame');
+    const img   = frame ? frame.querySelector('img') : null;
+    const deco  = document.querySelector('.about-img-deco');
+
+    if (frame) {
+        // Curtain-wipe reveal — plays once as the photo scrolls into view
+        gsap.to(frame, {
+            clipPath: 'inset(0% 0 0% 0)',
+            duration: 1.1,
+            ease: 'power3.inOut',
+            scrollTrigger: { trigger: wrap || frame, start: 'top 85%', toggleActions: 'play none none none' }
+        });
+    }
+    if (img) {
+        // Subtle parallax on the photo itself as you scroll through About
+        gsap.fromTo(img,
+            { yPercent: -8 },
+            { yPercent: 8, ease: 'none', scrollTrigger: { trigger: '#about', start: 'top bottom', end: 'bottom top', scrub: true } }
+        );
+    }
+    if (deco) {
+        // Deco frame drifts the opposite way for a light layered-depth feel
+        gsap.fromTo(deco,
+            { xPercent: 5, yPercent: -5 },
+            { xPercent: 0, yPercent: 0, ease: 'none', scrollTrigger: { trigger: '#about', start: 'top bottom', end: 'bottom top', scrub: true } }
+        );
+    }
+
+    // Tab lists: stagger their items in the first time About comes into view
+    document.querySelectorAll('.tab-contents li').forEach((li, i) => {
+        gsap.fromTo(li,
+            { opacity: 0, x: -16 },
+            {
+                opacity: 1, x: 0, duration: 0.5, ease: 'power2.out', delay: i * 0.06,
+                scrollTrigger: { trigger: '.about-text', start: 'top 75%', toggleActions: 'play none none none' }
+            }
+        );
+    });
+}
+initAboutReveal();
+
 /* ===================== SECTION NUMBER COUNT-UP ===================== */
 document.querySelectorAll('.section-number').forEach(el => {
     const target = parseInt(el.textContent, 10);
@@ -225,9 +269,20 @@ var tablinks    = document.getElementsByClassName('tab-links');
 var tabcontents = document.getElementsByClassName('tab-contents');
 function opentab(tabname, e) {
     for (let t of tablinks)    t.classList.remove('active-link');
-    for (let t of tabcontents) t.classList.remove('active-tab');
     (e?.currentTarget || event?.currentTarget)?.classList.add('active-link');
-    document.getElementById(tabname)?.classList.add('active-tab');
+
+    const nextTab = document.getElementById(tabname);
+    if (!nextTab || nextTab.classList.contains('active-tab')) return;
+
+    for (let t of tabcontents) t.classList.remove('active-tab');
+    nextTab.classList.add('active-tab');
+
+    if (typeof gsap !== 'undefined') {
+        gsap.fromTo(nextTab.querySelectorAll('li'),
+            { opacity: 0, x: -12 },
+            { opacity: 1, x: 0, duration: 0.4, ease: 'power2.out', stagger: 0.05 }
+        );
+    }
 }
 
 /* ===================== MOBILE MENU ===================== */
