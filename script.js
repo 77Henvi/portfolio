@@ -126,11 +126,46 @@ splitTitles.forEach(el => titleObs.observe(el));
 
 /* Project items already use .stagger-reveal — no extra delay override needed */
 
-/* ===================== SCROLL-LINKED LINE REVEAL (sixmorevodka "Chinaski" style) =====================
+/* ===================== GSAP SCROLL OVERLAP PIN (sixmorevodka-style) =====================
+   Pins each section in place while the next one slides up and covers it —
+   this replaces the old CSS position:sticky version, which broke because
+   `body { overflow-x: hidden }` created a bad scroll context. GSAP's pin
+   builds its own spacer + fixed positioning under the hood, so it isn't
+   affected by that at all, and is the same technique agency sites use. */
+gsap.registerPlugin(ScrollTrigger);
+
+function initOverlapPin() {
+    const sections = ['#header', '#about', '#project']; // #contact is the final layer, stays normal
+    sections.forEach((sel, i) => {
+        const el = document.querySelector(sel);
+        if (!el) return;
+        ScrollTrigger.create({
+            trigger: el,
+            start: 'top top',
+            end: 'bottom top',
+            pin: true,
+            pinSpacing: false,
+            anticipatePin: 1
+        });
+    });
+
+    // Give every pinned section a rising z-index so later ones visually cover earlier ones
+    gsap.utils.toArray('#header, #about, #project, #contact').forEach((el, i) => {
+        el.style.position = 'relative';
+        el.style.zIndex = i + 1;
+        if (i > 0) el.style.boxShadow = '0 -40px 80px rgba(0,0,0,0.45)';
+    });
+}
+
+// Overlap pin feels heavy on small screens with long content — desktop/tablet only
+if (window.innerWidth > 700) {
+    initOverlapPin();
+}
+
+/* ===================== SCROLL-LINKED LINE REVEAL (GSAP scrub, "Chinaski" style) =====================
    Splits target text (marked with .scroll-lines) into per-line spans by <br>,
-   then ties each line's opacity/translateY directly to scroll position instead of
-   a one-shot IntersectionObserver — so the text "scrubs" in and out with the scroll,
-   matching the reference site's pinned text reveal. */
+   then scrubs each line's opacity/translateY directly to scroll progress via
+   GSAP's ScrollTrigger `scrub`, matching the reference site's pinned text reveal. */
 function initScrollLineReveal() {
     const targets = document.querySelectorAll('.scroll-lines');
     targets.forEach(target => {
@@ -140,27 +175,24 @@ function initScrollLineReveal() {
         target.innerHTML = rawLines
             .map(line => `<span class="scroll-line-inner"><span class="scroll-line-content">${line.trim()}</span></span>`)
             .join('');
+
+        const lines = target.querySelectorAll('.scroll-line-content');
+        gsap.timeline({
+            scrollTrigger: {
+                trigger: target,
+                start: 'top 90%',
+                end: 'top 35%',
+                scrub: 0.4
+            }
+        }).to(lines, {
+            opacity: 1,
+            y: 0,
+            stagger: 0.15,
+            ease: 'none'
+        });
     });
 }
 initScrollLineReveal();
-
-const scrollLineEls = [...document.querySelectorAll('.scroll-line-content')];
-
-function updateScrollLines() {
-    if (!scrollLineEls.length) return;
-    const vh = window.innerHeight;
-    scrollLineEls.forEach((el, i) => {
-        const rect = el.getBoundingClientRect();
-        // progress 0 → line just entering bottom of viewport, 1 → settled near center
-        let progress = (vh * 0.9 - rect.top) / (vh * 0.55);
-        progress = Math.min(Math.max(progress, 0), 1);
-        el.style.opacity = progress;
-        el.style.transform = `translateY(${(1 - progress) * 40}%)`;
-    });
-}
-window.addEventListener('scroll', updateScrollLines, { passive: true });
-window.addEventListener('resize', updateScrollLines);
-updateScrollLines();
 
 /* ===================== SECTION NUMBER COUNT-UP ===================== */
 document.querySelectorAll('.section-number').forEach(el => {
